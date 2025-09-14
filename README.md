@@ -7,5 +7,5 @@
 <p align="center">Root Defend is a paid cybersecurity company built from scratch!</p>
 
 ## Essential Links
-- [Css Docs](https://www.w3schools.com/CSSref/index.php)
-- [Html Docs](https://www.w3schools.com/html/html_intro.asp)
+- [CSS Docs](https://www.w3schools.com/CSSref/index.php)
+- [HTMl Docs](https://www.w3schools.com/html/html_intro.asp)
