@@ -3,91 +3,122 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Root Defend - Cybersecurity Solutions</title>
+  <title>Root Defend | Cybersecurity Solutions</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
   <!-- Navbar -->
   <header class="navbar">
-    <div class="logo">Root<span>Defend</span></div>
-    <nav>
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-    <a href="#contact" class="btn">Get Started</a>
+    <div class="container">
+      <h1 class="logo">Root<span>Defend</span></h1>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <section id="home" class="hero">
-    <h1 data-animate>Protect Your Business with <span>Root Defend</span></h1>
-    <p data-animate>Private & Paid Cybersecurity Solutions You Can Trust.</p>
-    <a href="#services" class="btn">Explore Services</a>
+    <div class="hero-content">
+      <h2>Protecting Your Digital World</h2>
+      <p>Root Defend offers premium cybersecurity solutions to keep your business safe from threats.</p>
+      <a href="#contact" class="btn">Get Started</a>
+    </div>
   </section>
 
-  <!-- Services Section -->
-  <section id="services" class="services">
-    <h2 data-animate>Our Services</h2>
+  <!-- Services -->
+  <section id="services" class="services container">
+    <h2>Our Services</h2>
     <div class="service-grid">
-      <div class="card" data-animate>
-        <h3>Threat Detection</h3>
-        <p>24/7 monitoring to identify and stop cyber threats before they strike.</p>
-      </div>
-      <div class="card" data-animate>
+      <div class="service-card">
         <h3>Penetration Testing</h3>
-        <p>Find vulnerabilities before hackers do with advanced testing methods.</p>
+        <p>Identify vulnerabilities before attackers do with our ethical hacking experts.</p>
       </div>
-      <div class="card" data-animate>
+      <div class="service-card">
+        <h3>Threat Monitoring</h3>
+        <p>24/7 surveillance of your systems to detect and neutralize cyber threats instantly.</p>
+      </div>
+      <div class="service-card">
         <h3>Data Protection</h3>
-        <p>Keep your sensitive data safe with encryption and backup solutions.</p>
-      </div>
-      <div class="card" data-animate>
-        <h3>Incident Response</h3>
-        <p>Fast and effective recovery from cyber attacks to minimize damage.</p>
+        <p>Ensure your sensitive data remains safe with advanced encryption and backup systems.</p>
       </div>
     </div>
   </section>
 
-  <!-- About Section -->
-  <section id="about" class="about">
-    <h2 data-animate>About Root Defend</h2>
-    <p data-animate>
-      Root Defend is a private cybersecurity company committed to keeping your digital assets safe. 
-      With expert analysts, cutting-edge technology, and a dedication to privacy, 
-      we ensure businesses and individuals stay secure in a connected world.
-    </p>
+  <!-- About -->
+  <section id="about" class="about container">
+    <h2>About Root Defend</h2>
+    <p>Root Defend is a private, paid cybersecurity company dedicated to protecting businesses from modern cyber threats. With years of experience, we provide reliable security services tailored to your needs.</p>
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="contact">
-    <h2 data-animate>Contact Us</h2>
-    <form data-animate>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea placeholder="Your Message" required></textarea>
+  <!-- Contact -->
+  <section id="contact" class="contact container">
+    <h2>Contact Us</h2>
+    <form id="contact-form" action="https://formspree.io/f/mandkzvj" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Your Message" required></textarea>
+
+      <!-- reCAPTCHA -->
+      <div class="g-recaptcha" data-sitekey="6Lf-4sgrAAAAAIIt7PqVITy-siuFFbjp5rIPK3e7"></div>
+
       <button type="submit" class="btn">Send Message</button>
     </form>
+    <p id="form-status" class="form-status"></p>
   </section>
 
   <!-- Footer -->
-  <footer>
+  <footer class="footer">
     <p>&copy; 2025 Root Defend. All rights reserved.</p>
   </footer>
 
   <script>
-    // Fade-in on scroll
-    const elements = document.querySelectorAll("[data-animate]");
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Check if CAPTCHA is solved
+      if (grecaptcha.getResponse() === "") {
+        status.innerText = "⚠️ Please complete the CAPTCHA.";
+        status.style.color = "red";
+        return;
+      }
+
+      const formData = new FormData(form);
+
+      fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      }).then(response => {
+        if (response.ok) {
+          status.innerText = "Thanks for your message! We’ll be in touch soon.";
+          status.style.color = "#22c55e";
+          form.reset();
+          grecaptcha.reset();
+        } else {
+          response.json().then(data => {
+            if (data.errors) {
+              status.innerText = data.errors.map(error => error.message).join(", ");
+            } else {
+              status.innerText = "There was a problem submitting your form.";
+            }
+            status.style.color = "red";
+          });
         }
+      }).catch(error => {
+        status.innerText = "There was a problem submitting your form.";
+        status.style.color = "red";
       });
-    }, { threshold: 0.2 });
-    elements.forEach(el => observer.observe(el));
+    });
   </script>
 </body>
 </html>
