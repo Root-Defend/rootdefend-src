@@ -9,3 +9,4 @@
 ## Essential Links
 - [CSS Docs](https://www.w3schools.com/CSSref/index.php)
 - [HTMl Docs](https://www.w3schools.com/html/html_intro.asp)
+- [Discord](https://discord.gg/7CkrK4TXUM)
